@@ -1,4 +1,4 @@
-import markedKatexExtension from './markedTableOfContentsExtension';
+import markedKatexExtension from './markedKatexExtension';
 import { resetMarkedDefaults } from './resetMarkedDefaults';
 
 export default markedKatexExtension;
