@@ -7,7 +7,7 @@ module.exports = defineConfig([
 	{
 		input: 'src/index.ts',
 		output: {
-			file: 'lib/marked-toc-extension.js',
+			file: 'lib/marked-katex-extension.js',
 			format: 'cjs',
 		},
 		plugins: [
@@ -17,7 +17,7 @@ module.exports = defineConfig([
 	{
 		input: 'src/index.ts',
 		output: {
-			file: 'lib/marked-toc-extension.esm.js',
+			file: 'lib/marked-katex-extension.esm.js',
 			format: 'esm',
 		},
 		plugins: [
@@ -27,7 +27,7 @@ module.exports = defineConfig([
 	{
 		input: 'src/index.ts',
 		output: {
-			file: 'lib/marked-toc-extension.umd.js',
+			file: 'lib/marked-katex-extension.umd.js',
 			format: 'umd',
 			name: 'markedTocExtension',
 		},
