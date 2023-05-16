@@ -1,25 +1,28 @@
 import { marked } from 'marked';
 
-export function fixMarkdownText(md: string) {
+export function removeMarkDownLeadingSpaces(md: string) {
   return md.replace(/^ */gm, '');
 }
 
 export function compactHtml(html: string) {
-  return html.replace(/\n+\s*/g, '');
+  return html.replace(/\n+\s*/g, ' ').trim();
 }
 
-export function testMarkedOutput(md: string, received: string) {
-  const mdClean = fixMarkdownText(md);
-  const output = compactHtml(marked.parse(mdClean));
-  const katexTagsRemoved = extractKatexOutput(output);
+export function testMarkedOutput(md: string, received: string, options?: { inline?: boolean }) {
+  const { inline = false } = options || {};
+  const mdClean = removeMarkDownLeadingSpaces(md);
+  const generatedHtml = marked.parse(mdClean);
+  const katexTagsRemoved = extractKatexOutput(generatedHtml, inline);
+  const output = compactHtml(katexTagsRemoved);
   const expected = compactHtml(received);
-  expect(katexTagsRemoved).toEqual(expected);
+  expect(output).toEqual(expected);
 }
 
-export function extractKatexOutput(html: string) {
+export function extractKatexOutput(html: string, inline: boolean) {
   const regex = /<span((?!<span class="katex").)+<\/span>/g;
   return html.replace(regex, (substring) => {
-    return removeHtmlTags(substring);
+    const dry = removeHtmlTags(substring);
+    return inline ? dry : `\n${dry}\n`;
   });
 }
 

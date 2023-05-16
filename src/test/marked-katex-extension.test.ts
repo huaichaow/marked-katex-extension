@@ -5,19 +5,20 @@ import markedKatexExtension from '../markedKatexExtension';
 marked.use(markedKatexExtension());
 
 describe('marked-toc-extension', () => {
-  test('should work normally', () => {
-    const md = `
+  describe('block level', () => {
+    it('should work normally', () => {
+      const md = `
       $$
       a = b + c
       $$`;
 
-    const expectedHtml = 'a=b+c';
+      const expectedHtml = 'a=b+c';
 
-    testMarkedOutput(md, expectedHtml);
-  });
+      testMarkedOutput(md, expectedHtml);
+    });
 
-  test('should render multiple katex correctly', () => {
-    const md = `
+    it('should render multiple katex correctly', () => {
+      const md = `
       a simple formula:
 
       $$
@@ -25,20 +26,39 @@ describe('marked-toc-extension', () => {
       $$
 
       $$
-      a = b + c
+      d = e + f
       $$
 
       $$
-      a = b + c
+      g = h + i
       $$`;
 
-    const expectedHtml = `
+      const expectedHtml = `
       <p>a simple formula:</p>
       a=b+c
-      a=b+c
-      a=b+c
+      d=e+f
+      g=h+i
     `;
 
-    testMarkedOutput(md, expectedHtml);
+      testMarkedOutput(md, expectedHtml);
+    });
+  });
+
+  describe('inline level', () => {
+    it('should render inline katex', () => {
+      const md = `hello $a = b + c$ world`;
+
+      const expectedHtml = '<p>hello a=b+c world</p>';
+
+      testMarkedOutput(md, expectedHtml, { inline: true });
+    });
+
+    it('should render multiple inline katex', () => {
+      const md = `hello $a = b + c$ $d = e + f$ $g = h + i$ world`;
+
+      const expectedHtml = '<p>hello a=b+c d=e+f g=h+i world</p>';
+
+      testMarkedOutput(md, expectedHtml, { inline: true });
+    });
   });
 });
